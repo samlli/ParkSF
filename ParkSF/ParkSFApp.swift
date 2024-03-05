@@ -11,7 +11,10 @@ import SwiftUI
 struct ParkSFApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ZStack(alignment: .bottom){
+                MapView()
+                MenuView()
+            }
         }
     }
 }
