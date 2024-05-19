@@ -17,11 +17,18 @@ struct MapView: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: MKMapView, context: Context) {
-        guard let carLocation = carLocation else { return }
-        let annotation = MKPointAnnotation()
-        annotation.coordinate = carLocation.coordinate
-        uiView.addAnnotation(annotation)
-        let region = MKCoordinateRegion(center: carLocation.coordinate, latitudinalMeters: 500, longitudinalMeters: 500)
+        let defaultLocation = CLLocationCoordinate2D(latitude: 37.779268, longitude: -122.419248)
+        let region: MKCoordinateRegion
+        
+        if let carLocation = carLocation {
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = carLocation.coordinate
+            uiView.addAnnotation(annotation)
+            region = MKCoordinateRegion(center: carLocation.coordinate, latitudinalMeters: 500, longitudinalMeters: 500)
+        } else {
+            region = MKCoordinateRegion(center: defaultLocation, latitudinalMeters: 500, longitudinalMeters: 500)
+        }
+
         uiView.setRegion(region, animated: true)
     }
 }

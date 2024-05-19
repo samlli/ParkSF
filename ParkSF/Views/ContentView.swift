@@ -6,27 +6,33 @@
 //
 
 import SwiftUI
-import MapKit
+import CoreLocation
 
 struct ContentView: View {
     @StateObject var locationManager = LocationManager()
 
     var body: some View {
-        VStack {
-            if let location = locationManager.userLocation {
-                Text("Your location: \(location.coordinate.latitude), \(location.coordinate.longitude)")
-            }
-            Button(action: {
-                locationManager.saveCarLocation()
-            }) {
-                Text("Save Car Location")
-            }
-            if let carLocation = locationManager.carLocation {
+        GeometryReader { geometry in
+            VStack {
                 MapView(carLocation: $locationManager.carLocation)
-                    .frame(height: 300)
+                    .frame(height: geometry.size.height / 3)
+                VStack {
+                    if let location = locationManager.userLocation {
+                        Text("Your location: \(location.coordinate.latitude), \(location.coordinate.longitude)")
+                    }
+                    Button(action: {
+                        locationManager.saveCarLocation()
+                    }) {
+                        Text("Save Car Location")
+                    }
+                    if let carLocation = locationManager.carLocation {
+                        Text("Car location: \(carLocation.coordinate.latitude), \(carLocation.coordinate.longitude)")
+                    }
+                }
+                .frame(height: (geometry.size.height / 3) * 2)
+                .padding()
             }
         }
-        .padding()
     }
 }
 
