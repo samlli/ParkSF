@@ -12,28 +12,49 @@ import MapKit
 struct MapView: UIViewRepresentable {
     @Binding var carLocation: CLLocation?
     @Binding var userLocation: CLLocation?
+    @Binding var shouldCenter: Bool
+
+    class Coordinator: NSObject, MKMapViewDelegate {
+        var parent: MapView
+
+        init(parent: MapView) {
+            self.parent = parent
+        }
+
+        func mapView(_ mapView: MKMapView, regionWillChangeAnimated animated: Bool) {
+            parent.shouldCenter = false
+        }
+    }
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(parent: self)
+    }
 
     func makeUIView(context: Context) -> MKMapView {
-        MKMapView()
+        let mapView = MKMapView()
+        mapView.delegate = context.coordinator
+        mapView.showsUserLocation = true
+        return mapView
     }
 
     func updateUIView(_ uiView: MKMapView, context: Context) {
-        let region: MKCoordinateRegion
-        
-        if let carLocation = carLocation {
-            let annotation = MKPointAnnotation()
-            annotation.coordinate = carLocation.coordinate
-            uiView.addAnnotation(annotation)
-            region = MKCoordinateRegion(center: carLocation.coordinate, latitudinalMeters: 500, longitudinalMeters: 500)
-        } else if let userLocation = userLocation {
-            region = MKCoordinateRegion(center: userLocation.coordinate, latitudinalMeters: 500, longitudinalMeters: 500)
-        } else {
-            // Default to San Francisco City Hall if both locations are unavailable
-            let defaultLocation = CLLocationCoordinate2D(latitude: 37.779268, longitude: -122.419248)
-            region = MKCoordinateRegion(center: defaultLocation, latitudinalMeters: 500, longitudinalMeters: 500)
-        }
+        if shouldCenter {
+            let region: MKCoordinateRegion
 
-        uiView.setRegion(region, animated: true)
+            if let carLocation = carLocation {
+                let annotation = MKPointAnnotation()
+                annotation.coordinate = carLocation.coordinate
+                uiView.addAnnotation(annotation)
+                region = MKCoordinateRegion(center: carLocation.coordinate, latitudinalMeters: 500, longitudinalMeters: 500)
+            } else if let userLocation = userLocation {
+                region = MKCoordinateRegion(center: userLocation.coordinate, latitudinalMeters: 500, longitudinalMeters: 500)
+            } else {
+                let defaultLocation = CLLocationCoordinate2D(latitude: 37.770319, longitude: -122.443818)
+                region = MKCoordinateRegion(center: defaultLocation, latitudinalMeters: 8000, longitudinalMeters: 8000)
+            }
+
+            uiView.setRegion(region, animated: true)
+        }
     }
 }
 

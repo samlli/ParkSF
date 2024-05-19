@@ -10,18 +10,38 @@ import CoreLocation
 
 struct ContentView: View {
     @StateObject var locationManager = LocationManager()
+    @State private var shouldCenter = true
 
     var body: some View {
         GeometryReader { geometry in
             VStack {
-                MapView(carLocation: $locationManager.carLocation, userLocation: $locationManager.userLocation)
-                    .frame(height: geometry.size.height / 3)
+                ZStack {
+                    MapView(carLocation: $locationManager.carLocation, userLocation: $locationManager.userLocation, shouldCenter: $shouldCenter)
+                        .frame(height: geometry.size.height / 3)
+                    VStack {
+                        Spacer()
+                        HStack {
+                            Spacer()
+                            Button(action: {
+                                shouldCenter = true
+                            }) {
+                                Image(systemName: "location.circle.fill")
+                                    .resizable()
+                                    .frame(width: 44, height: 44)
+                                    .background(Color.white.opacity(0.7))
+                                    .clipShape(Circle())
+                                    .padding()
+                            }
+                        }
+                    }
+                }
                 VStack {
                     if let location = locationManager.userLocation {
                         Text("Your location: \(location.coordinate.latitude), \(location.coordinate.longitude)")
                     }
                     Button(action: {
                         locationManager.saveCarLocation()
+                        shouldCenter = true
                     }) {
                         Text("Save Car Location")
                     }
