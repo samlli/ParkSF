@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import CoreLocation
 import MapKit
 
 struct MapView: View {
@@ -15,7 +16,9 @@ struct MapView: View {
     
     var body: some View {
         VStack {
-            Map(coordinateRegion: viewModel.binding,showsUserLocation: true,userTrackingMode: .constant(.follow))
+            // TODO: userTrackingMode? should be done only on init and with a button press, not all the time while scrolling map
+            Map(coordinateRegion: viewModel.binding,showsUserLocation: true,
+                userTrackingMode: .constant(.follow))
                 .edgesIgnoringSafeArea(.all)
                 .onAppear(perform: {
                     viewModel.checkIfLocationIsEnabled()
@@ -44,7 +47,7 @@ final class MapViewModel: NSObject, ObservableObject, CLLocationManagerDelegate 
             locationManager?.desiredAccuracy = kCLLocationAccuracyBest
             locationManager!.delegate = self
         } else {
-            // TODO
+            // TODO: trigger alert informing user that enabling location services is necessary for optimal app functionality
             print("Show an alert letting them know this is off")
         }
     }
