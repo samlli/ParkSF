@@ -10,7 +10,7 @@ import SwiftUI
 @main
 struct ParkSFApp: App {
 //    @State private var parkedLocation = ParkedLocation.sampleData
-    @State var parkedLocation = ParkedLocation.sampleData
+//    @State var parkedLocation = LocationManager.sampleData
     
     var body: some Scene {
         WindowGroup {
@@ -19,10 +19,10 @@ struct ParkSFApp: App {
 //                MenuView(parkedLocation: $parkedLocation)
 //            }
             VStack(alignment: .center){
-                MapView()
-                    .frame(maxHeight: UIScreen.main.bounds.size.height * 0.33)
-                MenuView(parkedLocation: $parkedLocation)
-                    .frame(maxHeight: .infinity)
+//                MapView()
+//                    .frame(maxHeight: UIScreen.main.bounds.size.height * 0.33)
+                ContentView()
+//                    .frame(maxHeight: .infinity)
             }
         }
     }
