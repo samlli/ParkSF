@@ -17,7 +17,6 @@ struct ContentView: View {
             VStack {
                 ZStack {
                     MapView(carLocation: $locationManager.carLocation, userLocation: $locationManager.userLocation, shouldCenter: $shouldCenter)
-                        .frame(height: geometry.size.height / 3)
                     VStack {
                         Spacer()
                         HStack {
@@ -58,9 +57,10 @@ struct ContentView: View {
                         }
                     }
                 }
-                .frame(height: (geometry.size.height / 3) * 2)
+                .frame(height: geometry.size.height * 0.66)
                 .padding()
             }
+            .ignoresSafeArea(edges: .all)
         }
     }
 }
