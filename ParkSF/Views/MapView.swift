@@ -47,8 +47,12 @@ struct MapView: UIViewRepresentable {
                 uiView.addAnnotation(annotation)
                 region = MKCoordinateRegion(center: carLocation.coordinate, latitudinalMeters: 500, longitudinalMeters: 500)
             } else if let userLocation = userLocation {
+                // TODO: detect change in car location to delete previous annotations
+                uiView.removeAnnotations(uiView.annotations)
                 region = MKCoordinateRegion(center: userLocation.coordinate, latitudinalMeters: 500, longitudinalMeters: 500)
             } else {
+                // TODO: detect change in car location to delete previous annotations
+                uiView.removeAnnotations(uiView.annotations)
                 let defaultLocation = CLLocationCoordinate2D(latitude: 37.770319, longitude: -122.443818)
                 region = MKCoordinateRegion(center: defaultLocation, latitudinalMeters: 8000, longitudinalMeters: 8000)
             }

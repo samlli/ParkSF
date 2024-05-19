@@ -47,6 +47,12 @@ struct ContentView: View {
                     }
                     if let carLocation = locationManager.carLocation {
                         Text("Car location: \(carLocation.coordinate.latitude), \(carLocation.coordinate.longitude)")
+                        Button(action: {
+                            locationManager.deleteCarLocation()
+                            shouldCenter = true
+                        }) {
+                            Text("Delete Car Location")
+                        }
                     }
                 }
                 .frame(height: (geometry.size.height / 3) * 2)

@@ -19,6 +19,7 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
         self.locationManager.delegate = self
         self.locationManager.requestWhenInUseAuthorization()
         self.locationManager.startUpdatingLocation()
+        self.loadSavedCarLocation()
     }
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -27,6 +28,21 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     }
 
     func saveCarLocation() {
-        self.carLocation = self.userLocation
+        guard let carLocation = self.userLocation else { return }
+        let carLocationData = try? NSKeyedArchiver.archivedData(withRootObject: carLocation, requiringSecureCoding: false)
+        UserDefaults.standard.set(carLocationData, forKey: "carLocation")
+        self.carLocation = carLocation
+    }
+    
+    func deleteCarLocation() {
+        UserDefaults.standard.removeObject(forKey: "carLocation")
+        self.carLocation = nil
+    }
+    
+    private func loadSavedCarLocation() {
+        if let carLocationData = UserDefaults.standard.object(forKey: "carLocation") as? Data,
+           let carLocation = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(carLocationData) as? CLLocation {
+            self.carLocation = carLocation
+        }
     }
 }
