@@ -10,6 +10,7 @@ import CoreLocation
 
 class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     private let locationManager = CLLocationManager()
+
     @Published var userLocation: CLLocation?
     @Published var carLocation: CLLocation?
 

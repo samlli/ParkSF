@@ -14,7 +14,7 @@ struct ContentView: View {
     var body: some View {
         GeometryReader { geometry in
             VStack {
-                MapView(carLocation: $locationManager.carLocation)
+                MapView(carLocation: $locationManager.carLocation, userLocation: $locationManager.userLocation)
                     .frame(height: geometry.size.height / 3)
                 VStack {
                     if let location = locationManager.userLocation {
