@@ -53,6 +53,9 @@ struct ContentView: View {
                         }) {
                             Text("Delete Car Location")
                         }
+                        if let carAddress = locationManager.carAddress {
+                            Text("Car address: \(carAddress)")
+                        }
                     }
                 }
                 .frame(height: (geometry.size.height / 3) * 2)
