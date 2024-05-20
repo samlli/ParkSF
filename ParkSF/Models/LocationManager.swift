@@ -45,26 +45,31 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     }
     
     private func loadSavedCarLocation() {
-        if let carLocationData = UserDefaults.standard.object(forKey: "carLocation") as? Data,
-           let carLocation = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(carLocationData) as? CLLocation {
-            self.carLocation = carLocation
-            self.reverseGeocodeCarLocation()
+        if let carLocationData = UserDefaults.standard.object(forKey: "carLocation") as? Data {
+            do {
+                if let carLocation = try NSKeyedUnarchiver.unarchivedObject(ofClass: CLLocation.self, from: carLocationData) {
+                    self.carLocation = carLocation
+                    self.reverseGeocodeCarLocation()
+                }
+            } catch {
+                print("Failed to unarchive car location: \(error.localizedDescription)")
+            }
         }
     }
     
     private func reverseGeocodeCarLocation() {
-    guard let carLocation = carLocation else { return }
-    geocoder.reverseGeocodeLocation(carLocation) { [weak self] (placemarks, error) in
-        if let error = error {
-            print("Reverse geocode failed: \(error.localizedDescription)")
-            self?.carAddress = "Unknown address"
-            return
-        }
-        if let placemark = placemarks?.first {
-            self?.carAddress = "\(placemark.name ?? ""), \(placemark.locality ?? ""), \(placemark.administrativeArea ?? "") \(placemark.postalCode ?? "")"
-        } else {
-            self?.carAddress = "Unknown address"
+        guard let carLocation = carLocation else { return }
+        geocoder.reverseGeocodeLocation(carLocation) { [weak self] (placemarks, error) in
+            if let error = error {
+                print("Reverse geocode failed: \(error.localizedDescription)")
+                self?.carAddress = "Unknown address"
+                return
+            }
+            if let placemark = placemarks?.first {
+                self?.carAddress = "\(placemark.name ?? ""), \(placemark.locality ?? ""), \(placemark.administrativeArea ?? "") \(placemark.postalCode ?? "")"
+            } else {
+                self?.carAddress = "Unknown address"
+            }
         }
     }
-}
 }
