@@ -9,8 +9,22 @@
 import SwiftUI
 import MapKit
 
+// Extend CLLocationCoordinate2D to conform to Equatable
+extension CLLocationCoordinate2D: Equatable {
+    public static func == (lhs: CLLocationCoordinate2D, rhs: CLLocationCoordinate2D) -> Bool {
+        return lhs.latitude == rhs.latitude && lhs.longitude == rhs.longitude
+    }
+}
+
 struct MapView: UIViewRepresentable {
-    @Binding var carLocation: CLLocation?
+    @Binding var carLocation: CLLocation? {
+        didSet {
+            if oldValue?.coordinate != carLocation?.coordinate {
+                // When carLocation changes, trigger the update to remove annotations and add the new one
+                updateAnnotations(for: carLocation)
+            }
+        }
+    }
     @Binding var userLocation: CLLocation?
     @Binding var shouldCenter: Bool
 
@@ -42,22 +56,29 @@ struct MapView: UIViewRepresentable {
             let region: MKCoordinateRegion
 
             if let carLocation = carLocation {
-                let annotation = MKPointAnnotation()
-                annotation.coordinate = carLocation.coordinate
-                uiView.addAnnotation(annotation)
+                updateAnnotations(for: carLocation, in: uiView)
                 region = MKCoordinateRegion(center: carLocation.coordinate, latitudinalMeters: 500, longitudinalMeters: 500)
             } else if let userLocation = userLocation {
-                // TODO: detect change in car location to delete previous annotations
                 uiView.removeAnnotations(uiView.annotations)
                 region = MKCoordinateRegion(center: userLocation.coordinate, latitudinalMeters: 500, longitudinalMeters: 500)
             } else {
-                // TODO: detect change in car location to delete previous annotations
                 uiView.removeAnnotations(uiView.annotations)
                 let defaultLocation = CLLocationCoordinate2D(latitude: 37.770319, longitude: -122.443818)
                 region = MKCoordinateRegion(center: defaultLocation, latitudinalMeters: 8000, longitudinalMeters: 8000)
             }
 
             uiView.setRegion(region, animated: true)
+        }
+    }
+    
+    private func updateAnnotations(for location: CLLocation?, in mapView: MKMapView? = nil) {
+        guard let location = location else { return }
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = location.coordinate
+
+        if let mapView = mapView {
+            mapView.removeAnnotations(mapView.annotations)
+            mapView.addAnnotation(annotation)
         }
     }
 }
