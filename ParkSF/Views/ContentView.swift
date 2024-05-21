@@ -55,6 +55,17 @@ struct ContentView: View {
                         if let carAddress = locationManager.carAddress {
                             Text("Car address: \(carAddress)")
                         }
+                        if !locationManager.streetSweepingSchedule.isEmpty {
+                            Text("Street Sweeping Schedule:")
+                            ForEach(locationManager.streetSweepingSchedule, id: \.fullname) { info in
+                                Text("\(info.fullname ?? ""): \(info.fromhour ?? "") - \(info.tohour ?? "")")
+                            }
+                        }
+                        if let errorMessage = locationManager.errorMessage {
+                            Text("Error: \(errorMessage)")
+                                .foregroundColor(.red)
+                                .padding()
+                        }
                     }
                 }
                 .frame(height: geometry.size.height * 0.66)
