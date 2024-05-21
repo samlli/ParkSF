@@ -34,6 +34,7 @@ Hi, I built this app in order to help with parking in San Francisco.
         - one way streets
         - is one side of the street always even/odd numbered or are parities mixed
         - some streets have multiple days/times
+        - schedules differ for each week
 4. Display street sweeping schedule
 5. Push notifications
 
@@ -41,4 +42,5 @@ Hi, I built this app in order to help with parking in San Francisco.
 
 - generate new app_token and store locally/encrypt
 - remove uncessary files from github
-- clear error messages after success
+- AWS database integration
+- push notifications

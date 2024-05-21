@@ -39,6 +39,7 @@ struct ContentView: View {
                         Text("Your location: \(location.coordinate.latitude), \(location.coordinate.longitude)")
                     }
                     Button(action: {
+                        locationManager.scheduleManager.deleteSchedule()
                         locationManager.saveCarLocation()
                         shouldCenter = true
                     }) {
@@ -47,6 +48,7 @@ struct ContentView: View {
                     if let carLocation = locationManager.carLocation {
                         Text("Car location: \(carLocation.coordinate.latitude), \(carLocation.coordinate.longitude)")
                         Button(action: {
+                            locationManager.scheduleManager.deleteSchedule()
                             locationManager.deleteCarLocation()
                             shouldCenter = true
                         }) {
@@ -55,13 +57,13 @@ struct ContentView: View {
                         if let carAddress = locationManager.carAddress {
                             Text("Car address: \(carAddress)")
                         }
-                        if !locationManager.streetSweepingSchedule.isEmpty {
+                        if !locationManager.scheduleManager.streetSweepingSchedule.isEmpty {
                             Text("Street Sweeping Schedule:")
-                            ForEach(locationManager.streetSweepingSchedule, id: \.fullname) { info in
+                            ForEach(locationManager.scheduleManager.streetSweepingSchedule, id: \.fullname) { info in
                                 Text("\(info.fullname ?? ""): \(info.fromhour ?? "") - \(info.tohour ?? "")")
                             }
                         }
-                        if let errorMessage = locationManager.errorMessage {
+                        if let errorMessage = locationManager.scheduleManager.errorMessage {
                             Text("Error: \(errorMessage)")
                                 .foregroundColor(.red)
                                 .padding()
