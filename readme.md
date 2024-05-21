@@ -20,7 +20,9 @@ Hi, I built this app in order to help with parking in San Francisco.
     - lf_fadd and rt_fadd to determine street side is L or R
     - possible edge cases to check:
         - streets with medians
-        - streets with range of address numbers
+        - streets with range of address numbers (247-299 Divisadero St)
+        - buildings on corners do not reverse geocode nicely-can end up on wrong street.
+        - road name mismatch (22 Upper Terr vs 22 Upper Ter, buena vista ave w->buena vista ave west)
 4. Search schedule for street address
     - https://data.sfgov.org/City-Infrastructure/Street-Sweeping-Schedule/yhqp-riqs/about_data
     - filter on CNN and CNNRightLeft
@@ -34,3 +36,9 @@ Hi, I built this app in order to help with parking in San Francisco.
         - some streets have multiple days/times
 4. Display street sweeping schedule
 5. Push notifications
+
+# TODO #
+
+- generate new app_token and store locally/encrypt
+- remove uncessary files from github
+- clear error messages after success

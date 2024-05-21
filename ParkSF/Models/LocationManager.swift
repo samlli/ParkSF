@@ -1,5 +1,5 @@
 //
-//  ParkedLocation.swift
+//  LocationManager.swift
 //  ParkSF
 //
 //  Created by Samuel Li on 1/16/24.
@@ -38,6 +38,7 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     }
 
     func saveCarLocation() {
+        self.errorMessage = nil
         guard let carLocation = self.userLocation else { return }
         let carLocationData = try? NSKeyedArchiver.archivedData(withRootObject: carLocation, requiringSecureCoding: false)
         UserDefaults.standard.set(carLocationData, forKey: "carLocation")
@@ -50,6 +51,7 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
         self.carLocation = nil
         self.carAddress = nil
         self.streetSweepingSchedule.removeAll()
+        self.errorMessage = nil
     }
     
     private func loadSavedCarLocation() {
