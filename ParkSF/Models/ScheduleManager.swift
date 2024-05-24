@@ -75,11 +75,7 @@ class ScheduleManager: ObservableObject {
                 self.errorMessage = "Invalid address number or street data."
                 return false
             }
-            if leftSide != 0 {
-                return addressNumberInt % 2 == leftSide % 2
-            } else {
-                return addressNumberInt % 2 == rightSide % 2
-            }
+            return (rightSide != 0 && addressNumberInt % 2 == leftSide % 2) || (leftSide != 0 && addressNumberInt % 2 == rightSide % 2)
         }
 
         guard let street = filteredStreetData.first else {
