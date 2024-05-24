@@ -75,7 +75,22 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
                 self?.streetName = placemark.thoroughfare
                 if let streetNumber = self?.streetNumber, let streetName = self?.streetName {
                     self?.carAddress = "\(streetNumber) \(streetName)"
-                    self?.scheduleManager.getStreetSweepingSchedule(streetNumber: streetNumber, streetName: streetName)
+
+                    // Check if streetNumber is a range matching the pattern "[number]-[number]"
+                    let pattern = #"^(\d+)-(\d+)$"#
+                    if let regex = try? NSRegularExpression(pattern: pattern),
+                       let match = regex.firstMatch(in: streetNumber, range: NSRange(location: 0, length: streetNumber.utf16.count)) {
+                        if let range1 = Range(match.range(at: 1), in: streetNumber),
+                           let range2 = Range(match.range(at: 2), in: streetNumber),
+                           let num1 = Int(streetNumber[range1]),
+                           let num2 = Int(streetNumber[range2]) {
+                            // Get middle of range, round down to even
+                            let averageStreetNumber = num1 + (((num2 - num1) / 2) & ~1)
+                            self?.scheduleManager.getStreetSweepingSchedule(streetNumber: String(averageStreetNumber), streetName: streetName)
+                        }
+                    } else  {
+                        self?.scheduleManager.getStreetSweepingSchedule(streetNumber: streetNumber, streetName: streetName)
+                    }
                 }
             } else {
                 self?.carAddress = "Unknown address"
