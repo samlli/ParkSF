@@ -17,8 +17,15 @@ struct StreetData: Codable {
 
 struct StreetSweepingInfo: Codable {
     let fullname: String?
+    let weekday: String?
     let fromhour: String?
     let tohour: String?
+    let week1: String?
+    let week2: String?
+    let week3: String?
+    let week4: String?
+    let week5: String?
+    let holidays: String?
 }
 
 class ScheduleManager: ObservableObject {

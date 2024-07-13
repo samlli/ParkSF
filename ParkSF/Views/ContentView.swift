@@ -11,6 +11,7 @@ import CoreLocation
 struct ContentView: View {
     @StateObject var locationManager = LocationManager()
     @State private var shouldCenter = true
+    @State private var showingNotifications = false
 
     var body: some View {
         GeometryReader { geometry in
@@ -35,38 +36,51 @@ struct ContentView: View {
                     }
                 }
                 VStack {
-                    if let location = locationManager.userLocation {
-                        Text("Your location: \(location.coordinate.latitude), \(location.coordinate.longitude)")
-                    }
-                    Button(action: {
-                        locationManager.scheduleManager.deleteSchedule()
-                        locationManager.saveCarLocation()
-                        shouldCenter = true
-                    }) {
-                        Text("Save Car Location")
-                    }
-                    if let carLocation = locationManager.carLocation {
-                        Text("Car location: \(carLocation.coordinate.latitude), \(carLocation.coordinate.longitude)")
+                    VStack {
+                        if let location = locationManager.userLocation {
+                            Text("Your location: \(location.coordinate.latitude), \(location.coordinate.longitude)")
+                        }
                         Button(action: {
                             locationManager.scheduleManager.deleteSchedule()
-                            locationManager.deleteCarLocation()
+                            locationManager.saveCarLocation()
                             shouldCenter = true
                         }) {
-                            Text("Delete Car Location")
+                            Text("Save Car Location")
                         }
-                        if let carAddress = locationManager.carAddress {
-                            Text("Car address: \(carAddress)")
-                        }
-                        if !locationManager.scheduleManager.streetSweepingSchedule.isEmpty {
-                            Text("Street Sweeping Schedule:")
-                            ForEach(locationManager.scheduleManager.streetSweepingSchedule, id: \.fullname) { info in
-                                Text("\(info.fullname ?? ""): \(info.fromhour ?? "") - \(info.tohour ?? "")")
+                        if let carLocation = locationManager.carLocation {
+                            Text("Car location: \(carLocation.coordinate.latitude), \(carLocation.coordinate.longitude)")
+                            Button(action: {
+                                locationManager.scheduleManager.deleteSchedule()
+                                locationManager.deleteCarLocation()
+                                shouldCenter = true
+                            }) {
+                                Text("Delete Car Location")
+                            }
+                            if let carAddress = locationManager.carAddress {
+                                Text("Car address: \(carAddress)")
+                            }
+                            if !locationManager.scheduleManager.streetSweepingSchedule.isEmpty {
+                                Text("Street Sweeping Schedule:")
+                                ForEach(locationManager.scheduleManager.streetSweepingSchedule, id: \.fullname) { info in
+                                    Text("\(info.fullname ?? ""): \(info.fromhour ?? "") - \(info.tohour ?? "")")
+                                }
+                            }
+                            if let errorMessage = locationManager.scheduleManager.errorMessage {
+                                Text("Error: \(errorMessage)")
+                                    .foregroundColor(.red)
+                                    .padding()
                             }
                         }
-                        if let errorMessage = locationManager.scheduleManager.errorMessage {
-                            Text("Error: \(errorMessage)")
-                                .foregroundColor(.red)
-                                .padding()
+                    }
+                    VStack {
+                        Button("Notifications") {
+                            showingNotifications = true
+                        }
+                        .padding()
+                        .sheet(isPresented: $showingNotifications) {
+                            NavigationView {
+                                NotificationsView(notificationsManager: locationManager.notificationManager)
+                            }
                         }
                     }
                 }

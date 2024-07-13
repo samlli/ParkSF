@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		FCE250072BFD3F5B001DE7BC /* ScheduleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCE250062BFD3F5B001DE7BC /* ScheduleManager.swift */; };
 		FCE250092BFD3F6D001DE7BC /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCE250082BFD3F6D001DE7BC /* NotificationManager.swift */; };
+		FCE2500B2BFD4ABC001DE7BC /* NotificationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCE2500A2BFD4ABC001DE7BC /* NotificationsView.swift */; };
 		FCFB20CC2B5872B500C1AE8E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFB20CB2B5872B500C1AE8E /* ContentView.swift */; };
 		FCFE0AEE2B5759A500CDF086 /* ParkSFApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFE0AED2B5759A500CDF086 /* ParkSFApp.swift */; };
 		FCFE0AF02B5759A500CDF086 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCFE0AEF2B5759A500CDF086 /* MapView.swift */; };
@@ -21,6 +22,7 @@
 		FCE250032BF9B216001DE7BC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		FCE250062BFD3F5B001DE7BC /* ScheduleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleManager.swift; sourceTree = "<group>"; };
 		FCE250082BFD3F6D001DE7BC /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+		FCE2500A2BFD4ABC001DE7BC /* NotificationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsView.swift; sourceTree = "<group>"; };
 		FCFB20CB2B5872B500C1AE8E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		FCFE0AEA2B5759A500CDF086 /* ParkSF.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ParkSF.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FCFE0AED2B5759A500CDF086 /* ParkSFApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParkSFApp.swift; sourceTree = "<group>"; };
@@ -41,6 +43,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		FCE2500C2C005977001DE7BC /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
 		FCFE0AE12B5759A500CDF086 = {
 			isa = PBXGroup;
 			children = (
@@ -61,8 +70,9 @@
 			isa = PBXGroup;
 			children = (
 				FCE250032BF9B216001DE7BC /* Info.plist */,
-				FCFE0B032B57ADF100CDF086 /* Models */,
 				FCFE0AFF2B57ACED00CDF086 /* Views */,
+				FCFE0B032B57ADF100CDF086 /* Models */,
+				FCE2500C2C005977001DE7BC /* Controllers */,
 				FCFE0AED2B5759A500CDF086 /* ParkSFApp.swift */,
 				FCFE0AF12B5759A800CDF086 /* Assets.xcassets */,
 				FCFE0AF32B5759A800CDF086 /* Preview Content */,
@@ -83,6 +93,7 @@
 			children = (
 				FCFE0AEF2B5759A500CDF086 /* MapView.swift */,
 				FCFB20CB2B5872B500C1AE8E /* ContentView.swift */,
+				FCE2500A2BFD4ABC001DE7BC /* NotificationsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -173,6 +184,7 @@
 				FCE250072BFD3F5B001DE7BC /* ScheduleManager.swift in Sources */,
 				FCFE0AEE2B5759A500CDF086 /* ParkSFApp.swift in Sources */,
 				FCFE0B012B57ADE100CDF086 /* LocationManager.swift in Sources */,
+				FCE2500B2BFD4ABC001DE7BC /* NotificationsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

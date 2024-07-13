@@ -20,6 +20,7 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     private var streetName: String?
     
     var scheduleManager = ScheduleManager()
+    var notificationManager = NotificationManager()
 
     override init() {
         super.init()
@@ -28,6 +29,7 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
         self.locationManager.requestWhenInUseAuthorization()
         self.locationManager.startUpdatingLocation()
         self.loadSavedCarLocation()
+        self.notificationManager.requestNotificationPermissions()
     }
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -75,7 +77,9 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
                 self?.streetName = placemark.thoroughfare
                 if let streetNumber = self?.streetNumber, let streetName = self?.streetName {
                     self?.carAddress = "\(streetNumber) \(streetName)"
-
+                    
+//                    let streetNumber = "700-798"
+//                    let streetName = "Waller St"
                     // Check if streetNumber is a range matching the pattern "[number]-[number]"
                     let pattern = #"^(\d+)-(\d+)$"#
                     if let regex = try? NSRegularExpression(pattern: pattern),
